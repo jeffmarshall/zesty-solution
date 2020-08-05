@@ -1,9 +1,10 @@
 import React from 'react'
+import { withRouter } from 'next/router'
 import api from 'components/api'
 import Layout from 'components/layout'
 import PropertyImg from 'components/propertyImg'
 
-export default class Detail extends React.Component {
+export default withRouter(class Detail extends React.Component {
   static getInitialProps(context) {
     let { query } = context
     return api.get(`/statistics/${query.id}?distance=10000`).then(result => {
@@ -16,14 +17,14 @@ export default class Detail extends React.Component {
   render() {
     let {
       statistics,
-      url
+      router
     } = this.props
 
     let {
       id: propertyId,
       lat: latitude,
       lon: longitude
-    } = url.query
+    } = router.query
 
     let statsEls = Object.keys(statistics).map((key, ix) => {
       let value = statistics[key]
@@ -40,7 +41,7 @@ export default class Detail extends React.Component {
         <h2>Details</h2>
         <div>
           <p>
-            <PropertyImg propertyId={propertyId} />
+            <PropertyImg propertyId={propertyId} className="w-100" />
           </p>
           <dl>
             <dt>Latitude</dt>
@@ -53,4 +54,4 @@ export default class Detail extends React.Component {
       </Layout>
     )
   }
-}
+})

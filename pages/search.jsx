@@ -2,6 +2,14 @@ import api from 'components/api'
 import Layout from 'components/layout'
 import PropertyImg from 'components/propertyImg'
 import Link from 'next/link'
+import {
+  Form,
+  Row,
+  Col,
+  Button,
+  Alert,
+  Table,
+} from 'react-bootstrap'
 
 const DEFAULT_RADIUS = 10000
 
@@ -89,7 +97,7 @@ export default class Search extends React.Component {
     } = this.state
 
     let alertEl = errorMsg ? (
-      <p style={{color: 'red'}}>{errorMsg}</p>
+      <Alert variant="danger" className="mb-3">{errorMsg}</Alert>
     ) : null
 
     let renderResults = () => {
@@ -132,7 +140,7 @@ export default class Search extends React.Component {
       })
 
       let tableEl = (
-        <table>
+        <Table striped bordered hover>
           <thead>
             <tr>
               <th>Image</th>
@@ -143,7 +151,7 @@ export default class Search extends React.Component {
           <tbody>
             {rows}
           </tbody>
-        </table>
+        </Table>
       )
 
       return (
@@ -159,29 +167,37 @@ export default class Search extends React.Component {
       <Layout>
         <h2>Search Properties</h2>
         {alertEl}
-        <form onSubmit={this.handleSearchSubmit}>
-          <input
-            type="text"
-            placeholder="Longitude"
-            value={this.state.searchInputLongitude}
-            onChange={this.handleSearchLongitudeChange}
-          />
-          <input
-            type="text"
-            placeholder="Latitude"
-            value={this.state.searchInputLatitude}
-            onChange={this.handleSearchLatitudeChange}
-          />
-          <p>
-            <input
+        <Form onSubmit={this.handleSearchSubmit} className="my-3">
+          <Form.Group controlId="longitude">
+            <Form.Label>Longitude</Form.Label>
+            <Form.Control
               type="text"
-              placeholder="Radius"
+              value={this.state.searchInputLongitude}
+              onChange={this.handleSearchLongitudeChange}
+            />
+          </Form.Group>
+
+          <Form.Group controlId="latitude">
+            <Form.Label>Latitude</Form.Label>
+            <Form.Control
+              type="text"
+              value={this.state.searchInputLatitude}
+              onChange={this.handleSearchLatitudeChange}
+            />
+          </Form.Group>
+
+          <Form.Group controlId="radius">
+            <Form.Label>Radius</Form.Label>
+            <Form.Control
+              type="text"
               value={this.state.searchInputRadius}
               onChange={this.handleSearchRadiusChange}
             />
-          </p>
-          <input type="submit"/>
-        </form>
+          </Form.Group>
+          <Button variant="primary" type="submit">
+            Search
+          </Button>
+        </Form>
         {renderResults()}
       </Layout>
     )
